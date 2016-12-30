@@ -330,7 +330,6 @@ optiboot_version = 256*(OPTIBOOT_MAJVER + OPTIBOOT_CUSTOMVER) + OPTIBOOT_MINVER;
 #define WATCHDOG_8S     (_BV(WDP3) | _BV(WDP0) | _BV(WDE))
 #endif
 
-
 /*
  * We can never load flash with more than 1 page at a time, so we can save
  * some code space on parts with smaller pagesize by using a smaller int.
@@ -443,6 +442,26 @@ void appStart(uint8_t rstFlags) __attribute__ ((naked));
 #endif // VIRTUAL_BOOT_PARTITION
 
 
+#ifdef ANDUNO
+ #ifndef PINE
+  #define PINE _SFR_IO8(0x0C)
+  #define PINE0   0
+  #define PINE1   1
+  #define PINE2   2
+  #define PINE3   3
+  #define PINE4   4
+  #define PINE5   5
+  #define PINE6   6
+  #define PINE7   7
+ #endif
+ #ifndef DDRE
+  #define DDRE _SFR_IO8(0x0D)
+ #endif
+ #ifndef PORTE
+  #define PORTE _SFR_IO8(0x0E)
+ #endif
+#endif
+
 /* main program starts here */
 int main(void) {
   uint8_t ch;
@@ -483,6 +502,13 @@ int main(void) {
   ch = MCUCSR;
   MCUCSR = 0;
 #endif
+
+#ifdef ANDUNO  
+  // AndUNO - enable shield power
+  DDRE = ( 1 << PINE3 );
+  PORTE = ( 1 << PINE3 );
+#endif
+  
   if (ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))
       appStart(ch);
 

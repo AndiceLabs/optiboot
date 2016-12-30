@@ -312,6 +312,25 @@ atmega328_isp: LFUSE ?= FF
 atmega328_isp: EFUSE ?= 05
 atmega328_isp: isp
 
+anduno328: TARGET = anduno328
+anduno328: MCU_TARGET = atmega328p
+anduno328: CFLAGS += $(COMMON_OPTIONS) '-DANDUNO'
+anduno328: AVR_FREQ ?= 16000000L
+anduno328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
+anduno328: $(PROGRAM)_anduno328.hex
+anduno328: $(PROGRAM)_anduno328.lst
+
+anduno328_isp: anduno328
+anduno328_isp: TARGET = anduno328
+anduno328_isp: MCU_TARGET = atmega328pb
+# 512 byte boot, SPIEN
+anduno328_isp: HFUSE ?= DE
+# Low power xtal (16MHz) 16KCK/14CK+65ms
+anduno328_isp: LFUSE ?= FF
+# 2.7V brownout
+anduno328_isp: EFUSE ?= 05
+anduno328_isp: isp
+
 #Atmega1280
 atmega1280: MCU_TARGET = atmega1280
 atmega1280: CFLAGS += $(COMMON_OPTIONS) -DBIGBOOT $(UART_CMD)
