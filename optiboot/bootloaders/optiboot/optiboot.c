@@ -442,7 +442,7 @@ void appStart(uint8_t rstFlags) __attribute__ ((naked));
 #endif // VIRTUAL_BOOT_PARTITION
 
 
-#ifdef ANDUNO
+#ifdef ANDUNO328
  #ifndef PINE
   #define PINE _SFR_IO8(0x0C)
   #define PINE0   0
@@ -503,10 +503,14 @@ int main(void) {
   MCUCSR = 0;
 #endif
 
-#ifdef ANDUNO  
-  // AndUNO - enable shield power
+#ifdef ANDUNO328
+  // Enable shield power
   DDRE = ( 1 << PINE3 );
   PORTE = ( 1 << PINE3 );
+#endif
+#ifdef ANDUNO644
+  DDRD = ( 1 << PIND7 );
+  PORTD = ( 1 << PIND7 );
 #endif
   
   if (ch & (_BV(WDRF) | _BV(BORF) | _BV(PORF)))

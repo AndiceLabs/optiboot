@@ -314,7 +314,7 @@ atmega328_isp: isp
 
 anduno328: TARGET = anduno328
 anduno328: MCU_TARGET = atmega328p
-anduno328: CFLAGS += $(COMMON_OPTIONS) '-DANDUNO'
+anduno328: CFLAGS += $(COMMON_OPTIONS) -DANDUNO328
 anduno328: AVR_FREQ ?= 16000000L
 anduno328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
 anduno328: $(PROGRAM)_anduno328.hex
